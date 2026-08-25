@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & ML Technology Challenge</title>
+<style>
+:root{--navy:#172554;--blue:#2563eb;--purple:#7c3aed;--green:#16a34a;--red:#dc2626;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#64748b}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef4ff,#f7f2ff);color:var(--text)}
+.container{max-width:760px;margin:auto;padding:18px}
+.header{background:linear-gradient(135deg,var(--navy),#4f46e5);color:white;border-radius:22px;padding:28px 22px;margin-bottom:16px;box-shadow:0 10px 30px #17255425}
+.header h1{margin:0 0 8px;font-size:28px}.header p{margin:0;line-height:1.5;color:#e0e7ff}
+.card{background:var(--card);border-radius:20px;padding:22px;margin-bottom:16px;box-shadow:0 8px 25px #17255412}
+label{font-weight:bold;display:block;margin:12px 0 6px}input{width:100%;padding:14px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+.btn{border:0;border-radius:12px;padding:13px 18px;font-size:16px;font-weight:bold;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#e2e8f0;color:#172033}.hidden{display:none}
+.progress-wrap{height:10px;background:#e2e8f0;border-radius:20px;overflow:hidden;margin:12px 0 20px}.progress{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);width:10%;transition:.3s}
+
+.q{font-size:20px;font-weight:bold;line-height:1.45;margin:15px 0}.option{display:block;padding:14px;margin:10px 0;border:2px solid #e2e8f0;border-radius:14px;cursor:pointer;background:white;transition:.15s}.option:hover{border-color:#93c5fd;background:#eff6ff}.option input{width:auto;margin-right:10px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.nav .btn{flex:1}
+.score{font-size:52px;font-weight:800;color:var(--blue);text-align:center}.level{text-align:center;font-size:22px;font-weight:bold;margin:8px}
+.review{padding:14px;border-radius:14px;margin:10px 0;background:#f8fafc}.correct{border-left:6px solid var(--green)}.wrong{border-left:6px solid var(--red)}
+.small{font-size:13px;color:var(--muted);line-height:1.5}
+table{width:100%;border-collapse:collapse;margin-top:15px}td,th{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}
+@media(max-width:500px){.container{padding:10px}.header h1{font-size:23px}.card{padding:17px}.q{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🚀 AI & ML Technology Challenge</h1>
+<p>Can you identify whether a real-world problem needs a Rule-Based System, Machine Learning, or AI?</p>
+</div>
+
+<div id="start" class="card">
+<h2>🎓 Student Details</h2>
+<p class="small">Enter your details before starting. Your result is calculated on this device and is not uploaded to a server.</p>
+<label for="studentName">Name</label><input id="studentName" placeholder="Enter your name">
+<label for="rollNo">Roll Number</label><input id="rollNo" placeholder="Enter roll number">
+<br><br><button class="btn primary" onclick="startQuiz()">Start Challenge →</button>
+</div>
+
+<div id="quiz" class="card hidden">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<b id="counter">Question 1 of 10</b>
+</div>
+<div class="progress-wrap"><div class="progress" id="progress"></div></div>
+<div class="q" id="question"></div>
+<div id="options"></div>
+<div class="nav"><button class="btn secondary" id="prev" onclick="previousQuestion()">← Previous</button><button class="btn primary" id="next" onclick="nextQuestion()">Next →</button></div>
+</div>
+
+<div id="result" class="card hidden">
+<h2 style="text-align:center">🎉 Challenge Complete!</h2>
+<div class="score" id="score"></div>
+<div class="level" id="level"></div>
+<p style="text-align:center" id="feedback"></p>
+<div id="review"></div>
+<button class="btn primary" onclick="location.reload()" style="width:100%;margin-top:12px">Try Again</button>
+</div>
+</div>
+
+<script>
+const questions=[
+{cat:"🟢 Rule-Based",q:"A college entry gate follows: IF student ID is valid → Allow entry; ELSE → Deny entry. Which technology is being used?",o:["Machine Learning","Rule-Based System","Generative AI","Deep Learning"],a:1,e:"The decision is explicitly defined by an IF–THEN rule."},
+{cat:"🟢 Rule-Based",q:"A washing machine follows: IF clothes are heavily soiled → Wash for 60 minutes. This is an example of:",o:["Rule-Based System","Machine Learning","Generative AI","Computer Vision"],a:0,e:"The machine follows a predefined condition and action."},
+{cat:"🟢 Rule-Based",q:"A bank creates this rule: IF account balance < ₹1,000 → Send low-balance alert. What is the main characteristic?",o:["It learns automatically from customers","It follows predefined rules","It generates new content","It trains a neural network"],a:1,e:"A fixed rule does not learn patterns from historical examples."},
+{cat:"🔵 Machine Learning",q:"A school has 5 years of attendance, marks and assignment data and wants to predict which students may fail next semester. What is most suitable?",o:["Fixed IF–THEN rules only","Machine Learning","Manual calculation","Text generation"],a:1,e:"Historical data can be used to train a predictive model."},
+{cat:"🔵 Machine Learning",q:"A farmer gives a model thousands of images labelled Healthy Leaf and Diseased Leaf. The model learns to classify new leaves. This is:",o:["Rule-Based System","Machine Learning","Spreadsheet automation","Generative AI only"],a:1,e:"The model learns a classification pattern from labelled examples."},
+{cat:"🔵 Machine Learning",q:"A shop wants to predict next month's sales using previous sales, festivals, weather and promotions. Which task is most suitable?",o:["Image generation","Sales forecasting","Rule matching","Text summarization"],a:1,e:"Predicting a future numeric value from historical data is forecasting."},
+{cat:"🔵 Machine Learning",q:"A bank wants to identify unusual transactions by learning patterns from historical transaction data. Which approach is most appropriate?",o:["Anomaly detection","IF–THEN rules only","Text generation","Image generation"],a:0,e:"Anomaly detection identifies observations that differ from learned normal patterns."},
+{cat:"🟣 AI / Generative AI",q:"A student asks: “Explain Machine Learning like I am 10 years old and give me a simple example.” Which technology is particularly suitable?",o:["Rule-Based System","Generative AI","SQL database","Calculator"],a:1,e:"Generative AI can understand natural-language instructions and create an explanation."},
+{cat:"🟣 AI / Generative AI",q:"A college has thousands of PDFs containing regulations, syllabi and notices. Students want natural-language answers based on these documents. Which solution is most appropriate?",o:["Calculator","Rule-Based System only","RAG-based AI chatbot","Simple sorting algorithm"],a:2,e:"RAG retrieves relevant documents and uses an AI model to generate grounded answers."},
+{cat:"🟣 AI / Generative AI",q:"A floor-cleaning robot must detect dirty areas with a camera, predict which areas need cleaning first, choose an efficient route and understand “Clean the laboratory first.” Which solution is most appropriate?",o:["Only IF–THEN rules","Only a database","Combination of ML + Computer Vision + AI","Calculator"],a:2,e:"This problem combines perception, prediction, optimization and natural-language interaction."}
+];
+
+let current=0, answers=Array(questions.length).fill(null), studentName="", rollNo="";
+
+function startQuiz(){
+studentName=document.getElementById("studentName").value.trim();
+rollNo=document.getElementById("rollNo").value.trim();
+if(!studentName||!rollNo){alert("Please enter your name and roll number.");return;}
+document.getElementById("start").classList.add("hidden");document.getElementById("quiz").classList.remove("hidden");render();
+}
+function render(){
+const x=questions[current];
+
+document.getElementById("counter").textContent=`Question ${current+1} of ${questions.length}`;
+document.getElementById("progress").style.width=((current+1)/questions.length*100)+"%";
+document.getElementById("question").textContent=x.q;
+const box=document.getElementById("options");box.innerHTML="";
+x.o.forEach((opt,i)=>{
+const lab=document.createElement("label");lab.className="option";
+lab.innerHTML=`<input type="radio" name="answer" value="${i}" ${answers[current]===i?"checked":""}> ${String.fromCharCode(65+i)}. ${opt}`;
+lab.onclick=()=>answers[current]=i;box.appendChild(lab);
+});
+document.getElementById("prev").disabled=current===0;
+document.getElementById("next").textContent=current===questions.length-1?"Finish ✓":"Next →";
+}
+function nextQuestion(){
+if(answers[current]===null){alert("Please select an answer.");return;}
+if(current<questions.length-1){current++;render();}else{showResult();}
+}
+function previousQuestion(){if(current>0){current--;render();}}
+function showResult(){
+let score=answers.reduce((s,a,i)=>s+(a===questions[i].a?1:0),0), pct=score*10;
+let level,feedback;
+if(score<=3){level="🌱 Beginner";feedback="Start with the basics of rules, data and prediction. You are ready to learn more!"}
+else if(score<=6){level="🌿 Developing";feedback="Good start! You understand some differences. Practice converting more real-world problems."}
+else if(score<=8){level="🚀 Good AI Thinker";feedback="Great work! You can identify suitable ML and AI approaches for many problems."}
+else{level="🏆 AI Problem Solver";feedback="Excellent! You are thinking like an AI solution designer."}
+document.getElementById("quiz").classList.add("hidden");document.getElementById("result").classList.remove("hidden");
+document.getElementById("score").textContent=`${score}/10 (${pct}%)`;
+document.getElementById("level").textContent=level;
+document.getElementById("feedback").innerHTML=`<b>${studentName}</b> (${rollNo})<br>${feedback}`;
+let html="<h3>📋 Answer Review</h3>";
+questions.forEach((q,i)=>{
+let ok=answers[i]===q.a;
+html+=`<div class="review ${ok?"correct":"wrong"}"><b>Q${i+1}. ${ok?"✅ Correct":"❌ Incorrect"}</b><br>Your answer: ${answers[i]===null?"Not answered":q.o[answers[i]]}<br>Correct answer: <b>${q.o[q.a]}</b><br><span class="small">${q.e}</span></div>`;
+});
+document.getElementById("review").innerHTML=html;
+}
+</script>
+</body>
+</html>
